@@ -1,7 +1,7 @@
 
 var timer = new Array(4);
 
-const countDownTimer = function (id, min, sec) { 
+const countDownTimer = function (id, min, sec, repeate) { 
     var _vDate = new Date(); 
 
     _vDate.setMinutes(_vDate.getMinutes() + parseInt(min)); 
@@ -18,10 +18,19 @@ const countDownTimer = function (id, min, sec) {
         var now = new Date(); 
         var distDt = _vDate - now; 
         if (distDt < 0) 
-        { 
-            clearInterval(timer[id]); 
-            document.getElementById(id).textContent = '00:00';
-            return; 
+        {
+            if(repeate)
+            {
+                _vDate.setMinutes(_vDate.getMinutes() + parseInt(min)); 
+                _vDate.setSeconds(_vDate.getSeconds() + parseInt(sec)); 
+                distDt = _vDate - now; 
+            } 
+            else
+            {
+                clearInterval(timer[id]); 
+                document.getElementById(id).textContent = '00:00';
+                return; 
+            }
         } 
         var days = Math.floor(distDt / _day); 
         var hours = Math.floor((distDt % _day) / _hour); 
@@ -41,5 +50,5 @@ const countDownTimer = function (id, min, sec) {
         document.getElementById(id).textContent = "";//days + '일 '; 
         document.getElementById(id).textContent += minutes + ':'; 
         document.getElementById(id).textContent += seconds + ''; } 
-        timer[id] = setInterval(showRemaining, 1000); 
+        timer[id] = setInterval(showRemaining, 100); 
 }
